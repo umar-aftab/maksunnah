@@ -37,23 +37,36 @@ export default function Home() {
     fetchArticleOfTheDay();
   }, []);
 
-  useEffect(() => {
-    const loadTwitter = () => {
-      if (window.twttr && window.twttr.widgets) {
-        window.twttr.widgets.load();
-      }
-    };
-    if (!document.getElementById('twitter-wjs')) {
+  // useEffect(() => {
+  //   const loadTwitter = () => {
+  //     if (window.twttr && window.twttr.widgets) {
+  //       window.twttr.widgets.load();
+  //     }
+  //   };
+  //   if (!document.getElementById('twitter-wjs')) {
+  //     const script = document.createElement('script');
+  //     script.id = 'twitter-wjs';
+  //     script.src = 'https://platform.twitter.com/widgets.js';
+  //     script.async = true;
+  //     script.onload = loadTwitter;
+  //     document.body.appendChild(script);
+  //   } else {
+  //     loadTwitter();
+  //   }
+  // }, []);
+
+    useEffect(() => {
+    if (!document.getElementById('facebook-jssdk')) {
       const script = document.createElement('script');
-      script.id = 'twitter-wjs';
-      script.src = 'https://platform.twitter.com/widgets.js';
+      script.id = 'facebook-jssdk';
+      script.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v18.0';
       script.async = true;
-      script.onload = loadTwitter;
       document.body.appendChild(script);
-    } else {
-      loadTwitter();
+    } else if (window.FB) {
+      window.FB.XFBML.parse(); // Re-render if needed
     }
   }, []);
+
 
   return (
     <div className="font-sans scroll-smooth">
@@ -69,6 +82,7 @@ export default function Home() {
           <a href="https://salafipublications.com">salafipublications.com</a>
           <a href="https://gtownmasjid.com">gtownmasjid.com</a>
           <a href="https://sunnahpublishing.net">sunnahpublishing.net</a>
+          <a href="https://troid.org">troid.org</a>
         </div>
       </div>
 
@@ -83,7 +97,7 @@ export default function Home() {
   <nav className="hidden md:flex justify-center space-x-10 text-gray-700 text-lg pb-3">
     <a href="#article" className="hover:text-[#6D2E3A] transition-colors">Article</a>
     <a href="#salah" className="hover:text-[#6D2E3A] transition-colors">Salah</a>
-    <a href="#twitter" className="hover:text-[#6D2E3A] transition-colors">Twitter</a>
+    <a href="#twitter" className="hover:text-[#6D2E3A] transition-colors">Facebook</a>
     <a href="#fliers" className="hover:text-[#6D2E3A] transition-colors">Leaflets</a>
     <a href="#footer" className="hover:text-[#6D2E3A] transition-colors">Contact</a>
     <a
@@ -110,8 +124,8 @@ export default function Home() {
     <div className="md:hidden px-6 pb-4 space-y-2 bg-white text-center">
       <a href="#article" className="block hover:text-[#6D2E3A]" onClick={() => setMenuOpen(false)}>Article</a>
       <a href="#salah" className="block hover:text-[#6D2E3A]" onClick={() => setMenuOpen(false)}>Salah</a>
-      <a href="#twitter" className="block hover:text-[#6D2E3A]" onClick={() => setMenuOpen(false)}>Twitter</a>
-      <a href="#fliers" className="block hover:text-[#6D2E3A]" onClick={() => setMenuOpen(false)}>Fliers</a>
+      <a href="#twitter" className="block hover:text-[#6D2E3A]" onClick={() => setMenuOpen(false)}>Facebook</a>
+      <a href="#fliers" className="block hover:text-[#6D2E3A]" onClick={() => setMenuOpen(false)}>Leaflets</a>
       <a href="#footer" className="block hover:text-[#6D2E3A]" onClick={() => setMenuOpen(false)}>Contact</a>
       <a
         href="https://www.paypal.me/sunnahcalgary"
@@ -181,20 +195,47 @@ export default function Home() {
       </section>
 
       {/* Twitter Feed */}
-      <section id="twitter" className="bg-white p-6 rounded-xl shadow-md my-8">
-        <h2 className="text-2xl font-bold text-center text-[#6D2E3A] mb-4">📢 Twitter Feed</h2>
-        <div className="flex justify-center">
-          <a
-            className="twitter-timeline"
-            data-height="600"
-            data-theme="light"
-            data-chrome="noheader nofooter noborders"
-            href="https://twitter.com/maksunnah"
+    {/* <section id="twitter" className="bg-white p-6 rounded-xl shadow-md my-8">
+      <h2 className="text-2xl font-bold text-center text-[#6D2E3A] mb-4">📢 Twitter Feed</h2>
+      <div className="flex justify-center">
+        <a
+          className="twitter-timeline"
+          data-theme="light"
+          data-height="600"
+          data-chrome="noheader nofooter"
+          href="https://twitter.com/maksunnah"
+        >
+          Tweets by @maksunnah
+        </a>
+      </div>
+    </section> */}
+
+  <section id="twitter" className="bg-white p-6 rounded-xl shadow-md my-8">
+    <h2 className="text-2xl font-bold text-center text-[#6D2E3A] mb-4">📢 Facebook Feed</h2>
+    <div className="flex justify-center">
+      <div className="w-[500px]">
+        <div
+          className="fb-page"
+          data-href="https://www.facebook.com/makcalgary"
+          data-tabs="timeline"
+          data-width="500"
+          data-height="800"
+          data-small-header="false"
+          data-adapt-container-width="false"
+          data-hide-cover="false"
+          data-show-facepile="true"
+        >
+          <blockquote
+            cite="https://www.facebook.com/makcalgary"
+            className="fb-xfbml-parse-ignore"
           >
-            Tweets by @maksunnah
-          </a>
+            <a href="https://www.facebook.com/makcalgary">Maktabah As Sunnah Calgary</a>
+          </blockquote>
         </div>
-      </section>
+      </div>
+    </div>
+  </section>
+
 
       {/* Flyers Section */}
       <section id="fliers" className="bg-white p-6 rounded-xl shadow-md my-8">
