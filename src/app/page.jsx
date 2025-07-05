@@ -1,71 +1,39 @@
 "use client";
 import { useEffect, useState } from 'react';
-import { createClient } from '@supabase/supabase-js';
 import { FaTelegramPlane, FaTwitter, FaFacebookF, FaInstagram } from 'react-icons/fa';
-
-const supabase = createClient(
-  'https://wdbdiihzwzefjexyhxfv.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6IndkYmRpaWh6d3plZmpleHloeGZ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTAxOTE3MDgsImV4cCI6MjA2NTc2NzcwOH0.HEjp_lp-h6cjdDgDC9oTGjgP5vL2eOlDoxo6bokovWo'
-);
 
 export default function Home() {
   const [article, setArticle] = useState(null);
   const [menuOpen, setMenuOpen] = useState(false);
 
+  const [flyers, setFlyers] = useState([]);
+  const [loadingFlyers, setLoadingFlyers] = useState(true);
+
   useEffect(() => {
-    async function fetchArticleOfTheDay() {
-      const FIRST_ID = 116;
-      const totalArticles = 1015;
-      const daysSinceStart = Math.floor(
-        (new Date() - new Date('2025-06-18')) / (1000 * 60 * 60 * 24)
-      );
-      const targetId = FIRST_ID + (daysSinceStart % totalArticles);
-
-      const { data, error } = await supabase
-        .from('Articles')
-        .select('*')
-        .eq('id', targetId)
-        .single();
-
-      if (error || !data) {
-        setArticle(null);
-        return;
+    async function fetchFlyers() {
+      setLoadingFlyers(true);
+      try {
+        const res = await fetch('https://maksunnah-fliers.vercel.app/api/flyers');
+        if (!res.ok) throw new Error('Failed to fetch flyers');
+        const data = await res.json();
+        setFlyers(data);
+      } catch (err) {
+        setFlyers([]);
       }
-
-      setArticle(data);
+      setLoadingFlyers(false);
     }
-    fetchArticleOfTheDay();
+    fetchFlyers();
   }, []);
 
-  // useEffect(() => {
-  //   const loadTwitter = () => {
-  //     if (window.twttr && window.twttr.widgets) {
-  //       window.twttr.widgets.load();
-  //     }
-  //   };
-  //   if (!document.getElementById('twitter-wjs')) {
-  //     const script = document.createElement('script');
-  //     script.id = 'twitter-wjs';
-  //     script.src = 'https://platform.twitter.com/widgets.js';
-  //     script.async = true;
-  //     script.onload = loadTwitter;
-  //     document.body.appendChild(script);
-  //   } else {
-  //     loadTwitter();
-  //   }
-  // }, []);
-
-    useEffect(() => {
-    if (!document.getElementById('facebook-jssdk')) {
-      const script = document.createElement('script');
-      script.id = 'facebook-jssdk';
-      script.src = 'https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v18.0';
-      script.async = true;
-      document.body.appendChild(script);
-    } else if (window.FB) {
-      window.FB.XFBML.parse(); // Re-render if needed
-    }
-  }, []);
+ useEffect(() => {
+  async function fetchArticleOfTheDay() {
+    const res = await fetch('/api/articleOfTheDay');
+    const data = await res.json();
+    setArticle(data);
+  }
+  fetchArticleOfTheDay();
+}, []);
+ 
 
 
   return (
@@ -82,6 +50,7 @@ export default function Home() {
           <a href="https://salafipublications.com">salafipublications.com</a>
           <a href="https://gtownmasjid.com">gtownmasjid.com</a>
           <a href="https://sunnahpublishing.net">sunnahpublishing.net</a>
+          <a href="https://troid.org">troid.org</a>
         </div>
       </div>
 
@@ -96,8 +65,8 @@ export default function Home() {
   <nav className="hidden md:flex justify-center space-x-10 text-gray-700 text-lg pb-3">
     <a href="#article" className="hover:text-[#6D2E3A] transition-colors">Article</a>
     <a href="#salah" className="hover:text-[#6D2E3A] transition-colors">Salah</a>
-    <a href="#twitter" className="hover:text-[#6D2E3A] transition-colors">Facebook</a>
-    <a href="#fliers" className="hover:text-[#6D2E3A] transition-colors">Leaflets</a>
+    <a href="#fliers" className="hover:text-[#6D2E3A] transition-colors">Flyers</a>
+    <a href="#leaflets" className="hover:text-[#6D2E3A] transition-colors">Leaflets</a>
     <a href="#footer" className="hover:text-[#6D2E3A] transition-colors">Contact</a>
     <a
       href="https://www.paypal.me/sunnahcalgary"
@@ -123,8 +92,8 @@ export default function Home() {
     <div className="md:hidden px-6 pb-4 space-y-2 bg-white text-center">
       <a href="#article" className="block hover:text-[#6D2E3A]" onClick={() => setMenuOpen(false)}>Article</a>
       <a href="#salah" className="block hover:text-[#6D2E3A]" onClick={() => setMenuOpen(false)}>Salah</a>
-      <a href="#twitter" className="block hover:text-[#6D2E3A]" onClick={() => setMenuOpen(false)}>Facebook</a>
-      <a href="#fliers" className="block hover:text-[#6D2E3A]" onClick={() => setMenuOpen(false)}>Leaflets</a>
+      <a href="#fliers" className="block hover:text-[#6D2E3A]" onClick={() => setMenuOpen(false)}>Flyers</a>
+      <a href="#leaflets" className="block hover:text-[#6D2E3A]" onClick={() => setMenuOpen(false)}>Leaflets</a>
       <a href="#footer" className="block hover:text-[#6D2E3A]" onClick={() => setMenuOpen(false)}>Contact</a>
       <a
         href="https://www.paypal.me/sunnahcalgary"
@@ -193,52 +162,40 @@ export default function Home() {
         ></iframe>
       </section>
 
-      {/* Twitter Feed */}
-    {/* <section id="twitter" className="bg-white p-6 rounded-xl shadow-md my-8">
-      <h2 className="text-2xl font-bold text-center text-[#6D2E3A] mb-4">📢 Twitter Feed</h2>
-      <div className="flex justify-center">
-        <a
-          className="twitter-timeline"
-          data-theme="light"
-          data-height="600"
-          data-chrome="noheader nofooter"
-          href="https://twitter.com/maksunnah"
-        >
-          Tweets by @maksunnah
-        </a>
-      </div>
-    </section> */}
-
-  <section id="twitter" className="bg-white p-6 rounded-xl shadow-md my-8">
-    <h2 className="text-2xl font-bold text-center text-[#6D2E3A] mb-4">📢 Facebook Feed</h2>
-    <div className="flex justify-center">
-      <div className="w-[500px]">
-        <div
-          className="fb-page"
-          data-href="https://www.facebook.com/makcalgary"
-          data-tabs="timeline"
-          data-width="500"
-          data-height="800"
-          data-small-header="false"
-          data-adapt-container-width="false"
-          data-hide-cover="false"
-          data-show-facepile="true"
-        >
-          <blockquote
-            cite="https://www.facebook.com/makcalgary"
-            className="fb-xfbml-parse-ignore"
-          >
-            <a href="https://www.facebook.com/makcalgary">Maktabah As Sunnah Calgary</a>
-          </blockquote>
-        </div>
-      </div>
-    </div>
-  </section>
-
-
+   
       {/* Flyers Section */}
-      <section id="fliers" className="bg-white p-6 rounded-xl shadow-md my-8">
-        <h2 className="text-2xl font-bold text-center text-[#6D2E3A] mb-6">📄 Our Flyers</h2>
+    <section id="fliers" className="bg-white p-6 rounded-xl shadow-md my-8">
+      <h2 className="text-2xl font-bold text-center text-[#6D2E3A] mb-6">📄 Our Flyers</h2>
+      {loadingFlyers ? (
+        <div className="text-center text-gray-500">Loading flyers...</div>
+      ) : flyers.length === 0 ? (
+        <div className="text-center text-gray-500">No flyers available.</div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {flyers.map((flyer) => (
+            <div
+              key={flyer.id}
+              className="bg-gray-50 rounded-lg shadow hover:shadow-lg cursor-pointer flex flex-col items-center transition"
+              onClick={() => window.open(flyer.file_url, '_blank')}
+            >
+              <img
+                src={flyer.file_url}
+                alt={flyer.title}
+                className="w-full h-48 object-cover rounded-t-lg"
+              />
+              <div className="p-3 w-full text-center">
+                <div className="font-semibold text-[#6D2E3A] truncate">{flyer.title}</div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+    </section>
+
+
+      {/* Leaflets Section */}
+      <section id="leaflets" className="bg-white p-6 rounded-xl shadow-md my-8">
+        <h2 className="text-2xl font-bold text-center text-[#6D2E3A] mb-6">📄 Our Leaflets</h2>
         <div className="space-y-6">
           {[
             { file: 'flyer1.pdf', caption: 'Street Demonstrations,Protests & Boycotting' },
@@ -275,6 +232,9 @@ export default function Home() {
         <img src="/logo.png" alt="Footer Logo" className="mx-auto h-16 w-16 mb-4" />
         <p className="font-semibold">Maktabah As Sunnah</p>
         <p className="mt-1">Second Floor, 10960 42 St NE #110, Calgary, AB T3N 2B8</p>
+        <p className="mt-3 text-xs">
+           <a href="/privacy" className="underline text-gray-200 hover:text-white">Privacy Policy</a>
+        </p>
         <div className="flex justify-center items-center gap-6 mt-4 text-2xl">
           <a href="https://t.me/MaktabahAsSunnahCalgary" target="_blank" rel="noopener noreferrer"><FaTelegramPlane /></a>
           <a href="https://twitter.com/maksunnah" target="_blank" rel="noopener noreferrer"><FaTwitter /></a>
