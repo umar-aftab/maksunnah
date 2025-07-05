@@ -237,9 +237,9 @@ export default function Home() {
         </p>
         <div className="flex justify-center items-center gap-6 mt-4 text-2xl">
           <a href="https://t.me/MaktabahAsSunnahCalgary" target="_blank" rel="noopener noreferrer"><FaTelegramPlane /></a>
-          <a href="https://twitter.com/maksunnah" target="_blank" rel="noopener noreferrer"><FaTwitter /></a>
-          <a href="https://facebook.com/makcalgary" target="_blank" rel="noopener noreferrer"><FaFacebookF /></a>
-          <a href="https://instagram.com/maksunnahcalgary" target="_blank" rel="noopener noreferrer"><FaInstagram /></a>
+          <a href="https://twitter.com/maksunnahyyc" target="_blank" rel="noopener noreferrer"><FaTwitter /></a>
+          <a href="https://facebook.com/maksunnahyyc" target="_blank" rel="noopener noreferrer"><FaFacebookF /></a>
+          <a href="https://instagram.com/maksunnahyyc" target="_blank" rel="noopener noreferrer"><FaInstagram /></a>
         </div>
       </footer>
 
