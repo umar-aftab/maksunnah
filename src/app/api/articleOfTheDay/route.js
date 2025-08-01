@@ -8,10 +8,10 @@ const supabase = createClient(
 
 export async function GET() {
   // Logic from your previous code for article of the day:
-  const FIRST_ID = 116;
-  const totalArticles = 1015;
+  const FIRST_ID = 1131;
+  const totalArticles = 676;
   const daysSinceStart = Math.floor(
-    (new Date() - new Date('2025-07-04')) / (1000 * 60 * 60 * 24)
+    (new Date() - new Date('2025-07-31')) / (1000 * 60 * 60 * 24)
   );
   const targetId = FIRST_ID + (daysSinceStart % totalArticles);
 

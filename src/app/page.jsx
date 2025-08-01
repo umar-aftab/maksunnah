@@ -198,16 +198,16 @@ export default function Home() {
         <h2 className="text-2xl font-bold text-center text-[#6D2E3A] mb-6">📄 Our Leaflets</h2>
         <div className="space-y-6">
           {[
-            { file: 'flyer1.pdf', caption: 'Street Demonstrations,Protests & Boycotting' },
-            { file: 'flyer2.pdf', caption: 'The Barelwis' },
-            { file: 'flyer3.pdf', caption: 'Ikhwan-UL-Muslimeen' },
-            { file: 'flyer4.pdf', caption: 'JamaAt At- Tabligh' },
-            { file: 'flyer5.pdf', caption: 'Qadianis' }
+            { file: 'leaflet1.pdf', caption: 'Street Demonstrations,Protests & Boycotting' },
+            { file: 'leaflet2.pdf', caption: 'The Barelwis' },
+            { file: 'leaflet3.pdf', caption: 'Ikhwan-UL-Muslimeen' },
+            { file: 'leaflet4.pdf', caption: 'JamaAt At- Tabligh' },
+            { file: 'leaflet5.pdf', caption: 'Qadianis' }
           ].map(({ file, caption }, idx) => (
             <div key={idx} className="text-center">
               <p className="font-semibold text-gray-800 mb-2">{caption}</p>
               <embed
-                src={`/flyers/${file}`}
+                src={`/leaflets/${file}`}
                 type="application/pdf"
                 width="100%"
                 height="500px"
